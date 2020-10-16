@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.7.0;
 
 contract Sender {
@@ -9,25 +11,25 @@ contract Sender {
 
 contract Receiver {
     
-    receive() external payable {}
-    
     function getBalance() public view returns (uint256) {
         return (address(this).balance);
     }
+
+    receive() external payable {}
 }
 
 contract ReceiverException {
     
-    receive() external payable {
-        require(msg.sender == address(0));
-    }
-    
-    function getBalance() public view returns (uint256){
+    function getBalance() public view returns (uint256) {
         return (address(this).balance);
+    }
+ 
+    receive() external payable {
+        revert();
     }
 }
 
-contract SenderException {
+contract SenderNotSecureException {
         
     uint256 x;
     
@@ -48,11 +50,11 @@ contract SenderException {
 contract SenderSecure {
         
     uint256 x;
-    function getX() public view returns (uint256){
+    function getX() public view returns (uint256) {
         return x;
     }
     
-    function getBalance() public view returns (uint256){
+    function getBalance() public view returns (uint256) {
         return (address(this).balance);
     }
     

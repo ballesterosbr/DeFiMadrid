@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.7.0;
 
 contract AuctionSecure {
@@ -29,6 +31,7 @@ contract AuctionSecure {
     function withdrawRefund() external {
         uint refund = refunds[msg.sender];
         refunds[msg.sender] = 0;
-        msg.sender.transfer(refund);
+        (bool success, ) = msg.sender.call{value: refund}("");
+        require(success, "Transfer failed.");
     }
 }

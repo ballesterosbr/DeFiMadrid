@@ -1,8 +1,10 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.7.0;
 
 contract AuctionAttack {
     
-    address _reentrancy = 0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8;
+    address _reentrancy = 0xd9145CCE52D386f254917e481eB44e9943F39138; // <auction_address>;
     
     function attack() public payable {
         

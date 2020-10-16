@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.6.0;
 
 import "github.com/OpenZeppelin/openzeppelin-contracts/contracts/math/SafeMath.sol";

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: MIT
+
 pragma solidity ^0.7.0;
 
 contract CrowdfundingSec {
@@ -5,8 +7,21 @@ contract CrowdfundingSec {
     uint public finalAmount = 3 ether;
     uint public totalAmount;
 
+    address public owner; 
+    enum State {Inactive, Active}
+    State public status;
+
     mapping(address => uint) balanceOf;
     
+    modifier onlyOwner {
+        require(msg.sender == owner, "Only owner can call this function.");
+        _;
+    }
+
+    constructor() {    
+        owner = msg.sender; 
+    }
+
     function fund() public payable {
         require(msg.value == 1 ether);
         require(totalAmount <= finalAmount);
@@ -14,6 +29,12 @@ contract CrowdfundingSec {
         totalAmount += msg.value;
     }
     
+    function changeState() public onlyOwner {
+        require(totalAmount == finalAmount);
+        require(status == State.Inactive);
+        status = State.Active;
+    }
+
     function getMemberBalance() public view returns (uint256) {
         return balanceOf[msg.sender];
     }
@@ -22,14 +43,10 @@ contract CrowdfundingSec {
         return totalAmount;
     }
     
-    function withdrawFund() public {
-        require(totalAmount == finalAmount);
-        uint amount = balanceOf[msg.sender];
-        balanceOf[msg.sender] = 0;
-        totalAmount -= amount;
-        msg.sender.transfer(amount);
+    function getContractBalance() public view returns (uint256) {
+        return address(this).balance;
     }
-    
+           
     receive() external payable{
         revert();
     }
